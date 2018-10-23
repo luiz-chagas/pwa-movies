@@ -1,17 +1,25 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
+import Movie from './Movie';
+import MoviesList from './MoviesList';
 import './App.css';
-import api from './api';
+import { findMovies, getMovie } from './api';
 import loadingGif from './loading.gif';
 import logo from './logo.png';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { search: '', info: {}, loading: false };
+    this.state = {
+      search: '',
+      info: {},
+      loading: false,
+      movies: [],
+    };
 
     this.fetchData = this.fetchData.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
+    this.getMovie = this.getMovie.bind(this);
   }
 
   onKeyPress(e) {
@@ -20,59 +28,30 @@ class App extends Component {
     }
   }
 
-  async fetchData() {
+  async getMovie(id) {
     try {
-      this.setState({ info: {}, loading: true });
-      const result = await api(this.state.search);
+      this.setState({ info: {}, loading: true, movies: [] });
+      const result = await getMovie(id);
       this.setState({ info: { ...result }, loading: false });
     } catch (e) {
       this.setState({ loading: false });
     }
   }
 
+  async fetchData() {
+    try {
+      this.setState({ info: {}, loading: true, movies: [] });
+      const result = await findMovies(this.state.search);
+      if (result.Response === 'False') {
+        return this.setState({ info: { Error: result.Error }, loading: false });
+      }
+      return this.setState({ movies: result.Search, loading: false });
+    } catch (e) {
+      return this.setState({ loading: false });
+    }
+  }
+
   render() {
-    const ratings =
-      this.state.info.Ratings &&
-      this.state.info.Ratings.map((item) => {
-        let value = 0;
-        let cssClass = '';
-        if (item.Value) {
-          value = item.Value.replace('.', '');
-        }
-        if (value) {
-          value = Number.parseFloat(value);
-        }
-        if (value < 41) cssClass = 'red';
-        if (value > 64) cssClass = 'green';
-        if (value > 40 && value < 65) cssClass = 'yellow';
-        return (
-          <div key={Math.random()}>
-            <p className={`${cssClass} rating`}>{item.Value}</p>
-            <p className={cssClass}>{item.Source}</p>
-          </div>
-        );
-      });
-
-    const movieTitle =
-      this.state.info.Title && `${this.state.info.Title} (${this.state.info.Year})`;
-
-    const poster = this.state.info.Poster && this.state.info.Poster;
-
-    const movieInfo = this.state.info.Title && [
-      <tr key="runtime">
-        <td>Runtime:</td>
-        <td>{this.state.info.Runtime ? this.state.info.Runtime : 'N/A'}</td>
-      </tr>,
-      <tr key="director">
-        <td>Director:</td>
-        <td>{this.state.info.Director ? this.state.info.Director : 'N/A'}</td>
-      </tr>,
-      <tr key="actors">
-        <td>Actors:</td>
-        <td>{this.state.info.Actors ? this.state.info.Actors : 'N/A'}</td>
-      </tr>,
-    ];
-
     const loading = this.state.loading && (
       <div>
         <img className="loading" src={loadingGif} alt="Loading" />
@@ -105,15 +84,8 @@ class App extends Component {
         </header>
         <div className="App-result">
           {loading}
-          <h2>{movieTitle}</h2>
-          <div className="Movie-ratings">{ratings}</div>
-          {poster && <img src={poster} alt="Movie Poster" />}
-          <h5>{this.state.info.Awards}</h5>
-          <div className="Movie-info">
-            <table>
-              <tbody>{movieInfo}</tbody>
-            </table>
-          </div>
+          <MoviesList movies={this.state.movies} onClick={this.getMovie} />
+          <Movie info={this.state.info} />
           <div className="Movie-error"> {this.state.info.Error && this.state.info.Error} </div>
         </div>
       </div>
