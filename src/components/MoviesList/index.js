@@ -2,12 +2,16 @@ import React from 'react';
 
 import './MoviesList.css';
 
-const MoviesList = ({ movies, onClick }) => {
-  const listItems = movies.map(item => (
+const MoviesList = ({ moviesList, loadMovie }) => {
+  const onClick = (id) => {
+    loadMovie(id);
+  };
+
+  const listItems = moviesList.map(item => (
     <div
       className="movie"
       key={item.imdbID}
-      onClick={onClick.bind(this, item.imdbID)}
+      onClick={onClick.bind(null, item.imdbID)}
       role="button"
     >
       <div>
@@ -16,6 +20,7 @@ const MoviesList = ({ movies, onClick }) => {
       <div>{item.Poster.startsWith('http') && <img src={item.Poster} alt="Movie Poster" />}</div>
     </div>
   ));
+
   return <div className="container">{listItems}</div>;
 };
 
