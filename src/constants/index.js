@@ -1,5 +1,8 @@
-export const UPDATE_SEARCH = 'UPDATE_SEARCH';
-export const UPDATE_MOVIE = 'UPDATE_MOVIE';
-export const SET_MOVIES = 'SET_MOVIES';
-export const SET_LOADING = 'SET_LOADING';
-export const SET_VIEW = 'SET_VIEW';
+export const SEARCH_MOVIES = 'SEARCH_MOVIES';
+
+export const SEARCH_SUCCESS = 'SEARCH_SUCCESS';
+export const MOVIE_RECEIVED = 'MOVIE_RECEIVED';
+
+export const FETCHING = 'FETCHING';
+
+export const SET_ERROR = 'SET_ERROR';

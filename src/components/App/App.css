@@ -42,6 +42,21 @@
   color: #cc0;
 }
 
+.searchButton {
+  margin-left: 0.8em;
+  border: 1px solid silver;
+  border-radius: 100%;
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.searchButton:focus {
+  text-decoration: none;
+}
+
 .Movie-ratings {
   text-align: left;
   display: flex;
@@ -80,6 +95,7 @@
 
 .Movie-error {
   color: red;
+  padding-top: 30px;
 }
 
 .rating {
@@ -137,12 +153,3 @@ button:focus {
 button:active {
   box-shadow: none;
 }
-
-/* @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */

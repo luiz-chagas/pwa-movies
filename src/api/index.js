@@ -1,7 +1,7 @@
 export function findMovies(title = '') {
   return (
     title &&
-    fetch(`https://www.omdbapi.com/?s=${title.toLocaleLowerCase()}&apikey=dce3d0be`, {
+    fetch(`https://www.omdbapi.com/?s=${title.trim().toLocaleLowerCase()}&apikey=dce3d0be`, {
       crossDomain: true,
       method: 'GET',
     }).then(response => response.json())
