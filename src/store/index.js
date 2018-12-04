@@ -8,7 +8,7 @@ import reducer from './reducers';
 export const history = createBrowserHistory();
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__()
+  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
   : compose;
 
 const enhancer = composeEnhancers(applyMiddleware(routerMiddleware(history), reduxThunk));
